@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>Nginx服务器安装部署文档及自动化安装部署脚本 | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="1      概要Nginx服务器环境的安装。指导系统部署和维护使用， 以64位CentOS7.1环境下安装使用 2      要求编译Nginx的要求如下： 磁盘空间  必须保证有20 G以上的临时磁盘自由空间。Nginx安装完毕后会占据10MB左右的空间，实际磁盘需求会因编译设置和是否安装第三方模块而有所不同。 3       升级注意事项如果Nginx已经安装过，请先备份原Nginx的所有配">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Nginx服务器安装部署文档及自动化安装部署脚本">
+<meta property="og:url" content="http://yoursite.com/2018/04/12/Nginx服务器安装部署文档及自动化安装部署脚本/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="1      概要Nginx服务器环境的安装。指导系统部署和维护使用， 以64位CentOS7.1环境下安装使用 2      要求编译Nginx的要求如下： 磁盘空间  必须保证有20 G以上的临时磁盘自由空间。Nginx安装完毕后会占据10MB左右的空间，实际磁盘需求会因编译设置和是否安装第三方模块而有所不同。 3       升级注意事项如果Nginx已经安装过，请先备份原Nginx的所有配">
+<meta property="og:image" content="file:///C:/Users/dell/AppData/Local/Temp/msohtmlclip1/01/clip_image006.jpg">
+<meta property="og:image" content="file:///C:/Users/dell/AppData/Local/Temp/msohtmlclip1/01/clip_image008.jpg">
+<meta property="og:image" content="file:///C:/Users/dell/AppData/Local/Temp/msohtmlclip1/01/clip_image010.jpg">
+<meta property="og:updated_time" content="2018-04-12T15:19:56.970Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Nginx服务器安装部署文档及自动化安装部署脚本">
+<meta name="twitter:description" content="1      概要Nginx服务器环境的安装。指导系统部署和维护使用， 以64位CentOS7.1环境下安装使用 2      要求编译Nginx的要求如下： 磁盘空间  必须保证有20 G以上的临时磁盘自由空间。Nginx安装完毕后会占据10MB左右的空间，实际磁盘需求会因编译设置和是否安装第三方模块而有所不同。 3       升级注意事项如果Nginx已经安装过，请先备份原Nginx的所有配">
+<meta name="twitter:image" content="file:///C:/Users/dell/AppData/Local/Temp/msohtmlclip1/01/clip_image006.jpg">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Suche"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-Nginx服务器安装部署文档及自动化安装部署脚本" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/04/12/Nginx服务器安装部署文档及自动化安装部署脚本/" class="article-date">
+  <time datetime="2018-04-12T15:18:26.000Z" itemprop="datePublished">2018-04-12</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Nginx服务器安装部署文档及自动化安装部署脚本
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="1-概要"><a href="#1-概要" class="headerlink" title="1      概要"></a>1      概要</h2><p>Nginx服务器环境的安装。指导系统部署和维护使用，</p>
+<p>以64位CentOS7.1环境下安装使用</p>
+<h2 id="2-要求"><a href="#2-要求" class="headerlink" title="2      要求"></a>2      要求</h2><p>编译Nginx的要求如下：</p>
+<p>磁盘空间 </p>
+<p>必须保证有20 G以上的临时磁盘自由空间。Nginx安装完毕后会占据10MB左右的空间，实际磁盘需求会因编译设置和是否安装第三方模块而有所不同。</p>
+<h2 id="3-升级注意事项"><a href="#3-升级注意事项" class="headerlink" title="3       升级注意事项"></a>3       升级注意事项</h2><p>如果Nginx已经安装过，请先备份原Nginx的所有配置文件，即Nginx安装目录下的所有文件。</p>
+<h2 id="4-操作步骤说明"><a href="#4-操作步骤说明" class="headerlink" title="4       操作步骤说明"></a>4       操作步骤说明</h2><h3 id="4-1-安装CentOS7-1操作系统"><a href="#4-1-安装CentOS7-1操作系统" class="headerlink" title="4.1  安装CentOS7.1操作系统"></a>4.1  安装CentOS7.1操作系统</h3><p>本文的操作步骤是在VMware虚拟机上安装的CentOS 7.1操作系统中进行的，安装系统的步骤详见VMware上安装CentOS7.1步骤说明，里面有详细的安装步骤。</p>
+<h3 id="4-2-下载"><a href="#4-2-下载" class="headerlink" title="4.2  下载"></a>4.2  下载</h3><p>Nginx可以到官方网站：<a href="http://nginx.org/" target="_blank" rel="noopener">http://nginx.org/</a> 下载</p>
+<p>本文档用<a href="http://nginx.org/download/nginx-1.12.2.tar.gz" target="_blank" rel="noopener">http://nginx.org/download/nginx-1.12.2.tar.gz</a>稳定版。</p>
+<p>Win版下载地址：<a href="http://nginx.org/download/nginx-1.12.2.zip" target="_blank" rel="noopener">http://nginx.org/download/nginx-1.12.2.zip</a></p>
+<h3 id="4-3-Nginx-介绍"><a href="#4-3-Nginx-介绍" class="headerlink" title="4.3  Nginx 介绍"></a>4.3  Nginx 介绍</h3><p>Nginx（发音同engine x）是一个 Web服务器，也可以用作反向代理，负载平衡器和 HTTP缓存。Nginx是一款免费的开源软件，根据类BSD许可证的条款发布。其特点是占有内存少，并发能力强(Nginx在官方测试的结果中，能够支持五万个平行连接，而在实际的运作中，可以支持二万至四万个平行链接)，在同类型的网页服务器中表现较好，大部分 Web服务器通常使用 NGINX 作为负载均衡器,中国大陆使用过Nginx的网站用户有百度、淘宝、腾讯、京东等。</p>
+<p>目录结构：</p>
+<p>根目录下conf、sbin、html三个文件夹是安装后nginx的主体。Conf文件夹为默认配置文件文件夹。Nginx完成不同功能是通过修改配置文件达成的。</p>
+<h3 id="4-4-安装Nginx"><a href="#4-4-安装Nginx" class="headerlink" title="4.4  安装Nginx"></a>4.4  安装Nginx</h3><p>安装Nginx步骤中的操作现已被集成为自动化脚本，不需要按照子目录那样一步一步操作，子目录所示过程仅为参考。详见附录1.</p>
+<h4 id="4-4-1-检查并安装依赖库及软件"><a href="#4-4-1-检查并安装依赖库及软件" class="headerlink" title="4.4.1      检查并安装依赖库及软件"></a>4.4.1      检查并安装依赖库及软件</h4><p>1).gcc:nginx编译依赖gcc环境</p>
+<p>gcc一般默认已经装好，输入命令：</p>
+<p>gcc -v</p>
+<p>如果出现类似如下图：<img src="file:///C:/Users/dell/AppData/Local/Temp/msohtmlclip1/01/clip_image006.jpg" alt="img">　</p>
+<p>情况，说明gcc已经装好。</p>
+<p>否则，使用安装命令：</p>
+<p>yuminstall gcc-c++</p>
+<p>2).pcre:(Perl Compatible Regular Expressions)是一个Perl库，包括 perl 兼容的正则表达式库。nginx的http模块使用pcre来解析正则表达式.</p>
+<p>安装命令：</p>
+<p>yum install -y pcrepcre-devel</p>
+<p>3).zlib：该库提供了很多种压缩和解压缩的方式，nginx使用zlib对http包的内容进行gzip。</p>
+<p>安装命令：</p>
+<p>yum install -y zlib zlib-devel</p>
+<p>4).openssl:一个强大的安全套接字层密码库，囊括主要的密码算法、常用的密钥和证书封装管理功能及SSL协议，并提供丰富的应用程序供测试或其它目的使用。nginx不仅支持http协议，还支持https（即在ssl协议上传输http）.</p>
+<p>安装命令：</p>
+<p>yum install -y openssl openssl-devel</p>
+<h4 id="4-4-2-下载解压Nginx源码包"><a href="#4-4-2-下载解压Nginx源码包" class="headerlink" title="4.4.2      下载解压Nginx源码包"></a>4.4.2      下载解压Nginx源码包</h4><p>1).下载nginx源码包</p>
+<p>下载命令：</p>
+<p>wget <a href="http://nginx.org/download/nginx-1.12.2.tar.gz" target="_blank" rel="noopener">http://nginx.org/download/nginx-1.12.2.tar.gz</a></p>
+<p>2).解压Nginx的tar包很简单：</p>
+<p>tar -zxvf nginx-1.12.2.tar.gz  </p>
+<p>这样就在当前目录下新建了一个包含发行版源代码的目录。必须cd进入这个目录以继续服务器的编译。使用命令进入这个目录：</p>
+<p>cd /opt/software</p>
+<h4 id="4-4-3-编译、安装"><a href="#4-4-3-编译、安装" class="headerlink" title="4.4.3      编译、安装"></a>4.4.3      编译、安装</h4><p>1).编译及安装前的配置</p>
+<p>进入Nginx解压目录，在本文中是/opt/software/nginx-1.12.2/，当然您可以自定义其他目录：</p>
+<p>cd /opt/software/nginx-1.12.2/</p>
+<p>创建指定的nginx文件夹，以便配置编译参数时使用：</p>
+<p>mkdir /var/temp/</p>
+<p>mkdir /var/temp/nginx/</p>
+<p>mkdir /var/run/nginx/</p>
+<p>配置编译参数(可以使用./configure–help查询详细参数)，由于本文主要只是只是介绍安装部署的步骤，直接使用通行的一种可用方案。</p>
+<p>命令：</p>
+<p>./configure \</p>
+<p>　　　　–prefix=${INSTALL_DIR}/nginx-1.12.2\</p>
+<p>　　　　–pid-path=/var/run/nginx/nginx.pid\</p>
+<p>　　　　–lock-path=/var/lock/nginx.lock\</p>
+<p>　　　　–error-log-path=/var/log/nginx/error.log\</p>
+<p>　　　　–http-log-path=/var/log/nginx/access.log\</p>
+<p>　　　　–with-http_gzip_static_module\</p>
+<p>　　　　–http-client-body-temp-path=/var/temp/nginx/client\</p>
+<p>　　　　–http-proxy-temp-path=/var/temp/nginx/proxy\</p>
+<p>　　　　–http-fastcgi-temp-path=/var/temp/nginx/fastcgi\</p>
+<p>　　　　–http-uwsgi-temp-path=/var/temp/nginx/uwsgi\</p>
+<p>　　　　–http-scgi-temp-path=/var/temp/nginx/scgi</p>
+<p>　注：安装之前一定手动创建上一小步指定的nginx文件夹，即/var/temp、/var/temp/nginx、/var/run/nginx/文件夹，否则启动时报错。</p>
+<p>2).编译并安装</p>
+<p>编译并安装命令：</p>
+<p>make &amp;&amp; make install</p>
+<p>安装完成后可以进入/opt/nginx-1.12.2/目录，查看文件是否存在conf、sbin、html文件夹，若存在则安装成功。</p>
+<h3 id="4-5-启动Nginx"><a href="#4-5-启动Nginx" class="headerlink" title="4.5  启动Nginx"></a>4.5  启动Nginx</h3><p>进入Nginx安装目录的sbin目录下，即可执行文件所在目录，在本文中是/usr/local/nginx/sbin</p>
+<p>cd /opt/nginx-1.12.2/sbin</p>
+<h4 id="4-5-1-启动Nginx服务器"><a href="#4-5-1-启动Nginx服务器" class="headerlink" title="4.5.1      启动Nginx服务器"></a>4.5.1      启动Nginx服务器</h4><p>启动命令：</p>
+<p>./nginx</p>
+<p>注：若报错：[emerg] open()”/var/run/nginx/nginx.pid” failed (2: No such file or directory)</p>
+<p>需要查看下是不是在/var/run文件夹下不存在nginx文件夹，不存在则新建停止</p>
+<h4 id="4-5-2-查看是否启动"><a href="#4-5-2-查看是否启动" class="headerlink" title="4.5.2      查看是否启动"></a>4.5.2      查看是否启动</h4><p>命令：</p>
+<p>ps -ef | grep nginx</p>
+<p>如果同下图一样有nginx的master和worker两个进程证明启动成功。</p>
+<p><img src="file:///C:/Users/dell/AppData/Local/Temp/msohtmlclip1/01/clip_image008.jpg" alt="img"></p>
+<h3 id="4-6-停止Nginx"><a href="#4-6-停止Nginx" class="headerlink" title="4.6  停止Nginx"></a>4.6  停止Nginx</h3><p>命令：</p>
+<p>cd /opt/nginx-1.12.2/sbin &amp;&amp; ./nginx -s quit</p>
+<p>此方式停止步骤是待nginx进程处理任务完毕进行停止</p>
+<p>注意：不推荐使用kill命令暴力杀掉nginx进程</p>
+<h3 id="4-7-重启及重新加载配置"><a href="#4-7-重启及重新加载配置" class="headerlink" title="4.7  重启及重新加载配置"></a>4.7  重启及重新加载配置</h3><p>1).先停止再启动（建议使用）</p>
+<p>./nginx -s quit &amp;&amp; ./nginx</p>
+<p>2).重新加载配置文件</p>
+<p>./nginx -c /opt/nginx-1.12.2/conf/nginx.conf</p>
+<h3 id="4-8-测试"><a href="#4-8-测试" class="headerlink" title="4.8  测试"></a>4.8  测试</h3><p>nginx安装成功，启动nginx,即可通过ip地址来访问nginx:</p>
+<p><img src="file:///C:/Users/dell/AppData/Local/Temp/msohtmlclip1/01/clip_image010.jpg" alt="img"></p>
+<h2 id="5-参考文献"><a href="#5-参考文献" class="headerlink" title="5       参考文献"></a>5       参考文献</h2><p>官方主站：<a href="http://nginx.org/" target="_blank" rel="noopener">http://nginx.org/</a> </p>
+<p>Nginx的Wiki词条：<a href="https://zh.wikipedia.org/wiki/Nginx" target="_blank" rel="noopener">https://zh.wikipedia.org/wiki/Nginx</a> </p>
+<p>Linux版下载地址：<a href="http://nginx.org/download/nginx-1.12.2.tar.gz" target="_blank" rel="noopener">http://nginx.org/download/nginx-1.12.2.tar.gz</a></p>
+<p>Windos版下载地址：<a href="http://nginx.org/download/nginx-1.12.2.zip" target="_blank" rel="noopener">http://nginx.org/download/nginx-1.12.2.zip</a> </p>
+<p>nginx官方文档（英文）nginx documentation：<a href="https://nginx.org/en/docs/" target="_blank" rel="noopener">https://nginx.org/en/docs/</a> </p>
+<p>官方FAQ <a href="https://nginx.org/en/docs/faq.html" target="_blank" rel="noopener">https://nginx.org/en/docs/faq.html</a> </p>
+<p>官方书籍推荐 <a href="https://nginx.org/en/books.html" target="_blank" rel="noopener">https://nginx.org/en/books.html</a> </p>
+<p>Centos7安装Nginx实战：<a href="https://www.cnblogs.com/hafiz/p/6891458.html?utm_source=itdadao&amp;utm_medium=referral" target="_blank" rel="noopener">https://www.cnblogs.com/hafiz/p/6891458.html?utm_source=itdadao&amp;utm_medium=referral</a> </p>
+<p>Nginx 服务器安装及配置文件详解：</p>
+<p><a href="http://www.runoob.com/w3cnote/nginx-install-and-config.html" target="_blank" rel="noopener">http://www.runoob.com/w3cnote/nginx-install-and-config.html</a> </p>
+<h2 id="附录1：自动化安装部署Nginx的脚本"><a href="#附录1：自动化安装部署Nginx的脚本" class="headerlink" title="附录1：自动化安装部署Nginx的脚本"></a>附录1：自动化安装部署Nginx的脚本</h2><p>注意:</p>
+<p>1.下脚本需要管理员权限运行</p>
+<p>2.运行后若报错Another app is currently holding the yumlock; waiting for it to exit…</p>
+<p>在终端中输入命令：</p>
+<p>rm -f /var/run/yum.pid</p>
+<p>后重新运行以下脚本</p>
+<p>#!/bin/bash</p>
+<p># install nginx-1.12.2</p>
+<p># author:ChenLongtian</p>
+<p>#安装目录</p>
+<p>INSTALL_DIR=/opt</p>
+<p>#解压目录</p>
+<p>SRC_DIR=/opt/software</p>
+<p>[ ! -d ${INSTALL_DIR} ] &amp;&amp; mkdir -p${INSTALL_DIR}</p>
+<p>[ ! -d ${SRC_DIR} ] &amp;&amp; mkdir -p ${SRC_DIR}</p>
+<p>[ ! -d ${SRC_DIR} ] &amp;&amp; mkdir /var/temp/</p>
+<p>[ ! -d ${SRC_DIR} ] &amp;&amp; mkdir /var/temp/nginx/</p>
+<p>[ ! -d ${SRC_DIR} ] &amp;&amp; mkdir /var/run/nginx/</p>
+<p># Check if user is root</p>
+<p>if [ $(id -u) != “0” ]; then</p>
+<p>​    echo”Error: You must be root to run this script!!”</p>
+<p>​    exit 1</p>
+<p>fi</p>
+<p>#安装依赖包</p>
+<p>for Package in pcre pcre-devel zlib zlib-devel opensslopenssl-devel</p>
+<p>do</p>
+<p>​    yum -yinstall $Package</p>
+<p>done</p>
+<p>Install_Nginx()</p>
+<p>{</p>
+<p>NGINXFEATURES=”–prefix=${INSTALL_DIR}/nginx-1.12.2\</p>
+<p>–pid-path=/var/run/nginx/nginx.pid \</p>
+<p>–lock-path=/var/lock/nginx.lock \</p>
+<p>–error-log-path=/var/log/nginx/error.log \</p>
+<p>–http-log-path=/var/log/nginx/access.log \</p>
+<p>–with-http_gzip_static_module \</p>
+<p>–http-client-body-temp-path=/var/temp/nginx/client \</p>
+<p>–http-proxy-temp-path=/var/temp/nginx/proxy \</p>
+<p>–http-fastcgi-temp-path=/var/temp/nginx/fastcgi \</p>
+<p>–http-uwsgi-temp-path=/var/temp/nginx/uwsgi \</p>
+<p>–http-scgi-temp-path=/var/temp/nginx/scgi</p>
+<p>“</p>
+<p>cd ${SRC_DIR}</p>
+<p>#下载nginx解压</p>
+<p>echo ‘Downloading NGINX’</p>
+<p>wget <a href="http://nginx.org/download/nginx-1.12.2.tar.gz" target="_blank" rel="noopener">http://nginx.org/download/nginx-1.12.2.tar.gz</a></p>
+<p>echo “Extracting ${NGINX}…”</p>
+<p>tar -zxvf nginx-1.12.2.tar.gz</p>
+<p>echo ‘Done.’</p>
+<p>#编译</p>
+<p>cd nginx-1.12.2/</p>
+<p>echo ‘###################’</p>
+<p>echo ‘Compile NGINX’</p>
+<p>echo ‘###################’</p>
+<p>./configure ${NGINXFEATURES}</p>
+<p>make</p>
+<p>make install</p>
+<p>cd ../</p>
+<p>#创建一个专门存放VirtualHost的目录</p>
+<p>mkdir -p ${INSTALL_DIR}/nginx-1.12.2/conf/vhosts</p>
+<p>#创建nginx client目录</p>
+<p>mkdir -p /var/temp/nginx/client</p>
+<p>}</p>
+<p>Install_Nginx</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2018/04/12/Nginx服务器安装部署文档及自动化安装部署脚本/" data-id="cjfwrdhbv0000wop4ucgtmhf1" class="article-share-link">Teilen</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2018/04/12/快速搭建基于Nginx的防盗链文件服务器/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Neuer</strong>
+      <div class="article-nav-title">
+        
+          快速搭建基于Nginx的防盗链文件服务器
+        
+      </div>
+    </a>
+  
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archiv</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">letzter Beitrag</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2018/04/12/快速搭建基于Nginx的防盗链文件服务器/">快速搭建基于Nginx的防盗链文件服务器</a>
+          </li>
+        
+          <li>
+            <a href="/2018/04/12/Nginx服务器安装部署文档及自动化安装部署脚本/">Nginx服务器安装部署文档及自动化安装部署脚本</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2018 John Doe<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>

@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>快速搭建基于Nginx的防盗链文件服务器 | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="1      概要搭建基于Nginx的具有防盗链功能的文件服务器， 在64位CentOS7.1环境下安装使用 2      要求磁盘空间： Nginx会占据10MB左右的空间。 具体占用空间视文件服务器存储文件的大小决定。 3       修改配置文件注意事项每次修改配置文件前，请先备份原Nginx的所有配置文件，即Nginx安装目录下conf文件夹的所有文件。 4       操作步骤说明4.1">
+<meta property="og:type" content="article">
+<meta property="og:title" content="快速搭建基于Nginx的防盗链文件服务器">
+<meta property="og:url" content="http://yoursite.com/2018/04/12/快速搭建基于Nginx的防盗链文件服务器/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="1      概要搭建基于Nginx的具有防盗链功能的文件服务器， 在64位CentOS7.1环境下安装使用 2      要求磁盘空间： Nginx会占据10MB左右的空间。 具体占用空间视文件服务器存储文件的大小决定。 3       修改配置文件注意事项每次修改配置文件前，请先备份原Nginx的所有配置文件，即Nginx安装目录下conf文件夹的所有文件。 4       操作步骤说明4.1">
+<meta property="og:image" content="file:///C:/Users/dell/AppData/Local/Temp/msohtmlclip1/01/clip_image006.jpg">
+<meta property="og:image" content="file:///C:/Users/dell/AppData/Local/Temp/msohtmlclip1/01/clip_image008.jpg">
+<meta property="og:image" content="file:///C:/Users/dell/AppData/Local/Temp/msohtmlclip1/01/clip_image010.jpg">
+<meta property="og:updated_time" content="2018-04-12T15:42:51.528Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="快速搭建基于Nginx的防盗链文件服务器">
+<meta name="twitter:description" content="1      概要搭建基于Nginx的具有防盗链功能的文件服务器， 在64位CentOS7.1环境下安装使用 2      要求磁盘空间： Nginx会占据10MB左右的空间。 具体占用空间视文件服务器存储文件的大小决定。 3       修改配置文件注意事项每次修改配置文件前，请先备份原Nginx的所有配置文件，即Nginx安装目录下conf文件夹的所有文件。 4       操作步骤说明4.1">
+<meta name="twitter:image" content="file:///C:/Users/dell/AppData/Local/Temp/msohtmlclip1/01/clip_image006.jpg">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Suche"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-快速搭建基于Nginx的防盗链文件服务器" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/04/12/快速搭建基于Nginx的防盗链文件服务器/" class="article-date">
+  <time datetime="2018-04-12T15:40:19.000Z" itemprop="datePublished">2018-04-12</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      快速搭建基于Nginx的防盗链文件服务器
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="1-概要"><a href="#1-概要" class="headerlink" title="1      概要"></a>1      概要</h2><p>搭建基于Nginx的具有防盗链功能的文件服务器，</p>
+<p>在64位CentOS7.1环境下安装使用</p>
+<h2 id="2-要求"><a href="#2-要求" class="headerlink" title="2      要求"></a>2      要求</h2><p>磁盘空间：</p>
+<p>Nginx会占据10MB左右的空间。</p>
+<p>具体占用空间视文件服务器存储文件的大小决定。</p>
+<h2 id="3-修改配置文件注意事项"><a href="#3-修改配置文件注意事项" class="headerlink" title="3       修改配置文件注意事项"></a>3       修改配置文件注意事项</h2><p>每次修改配置文件前，请先备份原Nginx的所有配置文件，即Nginx安装目录下conf文件夹的所有文件。</p>
+<h2 id="4-操作步骤说明"><a href="#4-操作步骤说明" class="headerlink" title="4       操作步骤说明"></a>4       操作步骤说明</h2><h3 id="4-1-安装CentOS7-1操作系统"><a href="#4-1-安装CentOS7-1操作系统" class="headerlink" title="4.1  安装CentOS7.1操作系统"></a>4.1  安装CentOS7.1操作系统</h3><p>本文的操作步骤是在VMware虚拟机上安装的CentOS 7.1操作系统中进行的，安装系统步骤的相关文档在互联网上很多。如有需求后续我会补上VMware上安装CentOS7.1的简要步骤说明。</p>
+<h3 id="4-2-安装部署Nginx"><a href="#4-2-安装部署Nginx" class="headerlink" title="4.2  安装部署Nginx"></a>4.2  安装部署Nginx</h3><p>Nginx的安装部署见Nginx安装部署文档，本文不再赘述。</p>
+<p>Nginx应在官方网站：<a href="http://nginx.org/" target="_blank" rel="noopener">http://nginx.org/</a> 下载</p>
+<p>本文档用<a href="http://nginx.org/download/nginx-1.12.2.tar.gz" target="_blank" rel="noopener">http://nginx.org/download/nginx-1.12.2.tar.gz</a>稳定版。</p>
+<p>Win版下载地址：<a href="http://nginx.org/download/nginx-1.12.2.zip" target="_blank" rel="noopener">http://nginx.org/download/nginx-1.12.2.zip</a></p>
+<h3 id="4-3-Nginx-介绍"><a href="#4-3-Nginx-介绍" class="headerlink" title="4.3  Nginx 介绍"></a>4.3  Nginx 介绍</h3><p>Nginx（发音同engine x）是一个 Web服务器，也可以用作反向代理，负载平衡器和 HTTP缓存。Nginx是一款免费的开源软件，根据类BSD许可证的条款发布。其特点是占有内存少，并发能力强(Nginx在官方测试的结果中，能够支持五万个平行连接，而在实际的运作中，可以支持二万至四万个平行链接)，在同类型的网页服务器中表现较好，大部分 Web服务器通常使用 NGINX 作为负载均衡器,中国大陆使用过Nginx的网站用户有百度、淘宝、腾讯、京东等。</p>
+<p>目录结构：</p>
+<p>根目录下conf、sbin、html三个文件夹是安装后nginx的主体。Conf文件夹为默认配置文件文件夹。Nginx完成不同功能是通过修改配置文件达成的。</p>
+<h3 id="4-4-备份Nginx初始的配置文件"><a href="#4-4-备份Nginx初始的配置文件" class="headerlink" title="4.4  备份Nginx初始的配置文件"></a>4.4  备份Nginx初始的配置文件</h3><p>切换到管理员用户后</p>
+<p>创建用于保存备份的文件夹</p>
+<p>mkdir/opt/nginx-1.12.2/conf_mydefault</p>
+<p>移动到Nginx配置文件所在的conf目录：</p>
+<p>cd /opt/nginx-1.12.2/conf</p>
+<p>拷贝配置文件：</p>
+<p>cp -ip nginx.conf /opt/nginx-1.12.2/conf_mydefault</p>
+<h3 id="4-5-添加测试目录和文件"><a href="#4-5-添加测试目录和文件" class="headerlink" title="4.5  添加测试目录和文件"></a>4.5  添加测试目录和文件</h3><p>创建测试目录:</p>
+<p>mkdir /opt/nginx-1.12.2/html/test</p>
+<p>移动到测试目录:</p>
+<p>cd /opt/nginx-1.12.2/html/test</p>
+<p>创建测试文件:</p>
+<p>vim t</p>
+<p>输入一些内容后按ESC输入:wq保存退出</p>
+<h3 id="4-6-修改Nginx的配置文件"><a href="#4-6-修改Nginx的配置文件" class="headerlink" title="4.6  修改Nginx的配置文件"></a>4.6  修改Nginx的配置文件</h3><p>确认切换到管理员用户后</p>
+<p>移动到Nginx配置文件所在的conf目录：</p>
+<p>cd /opt/nginx-1.12.2/conf</p>
+<p>打开Nginx的配置文件：</p>
+<p>vimnginx.conf</p>
+<p>用附录1的配置文件覆盖后保存。</p>
+<h3 id="4-7-重新加载配置并启动Nginx"><a href="#4-7-重新加载配置并启动Nginx" class="headerlink" title="4.7   重新加载配置并启动Nginx"></a>4.7   重新加载配置并启动Nginx</h3><p>重新加载配置文件</p>
+<p>./nginx -c /opt/nginx-1.12.2/conf/nginx.conf</p>
+<h3 id="4-8-测试"><a href="#4-8-测试" class="headerlink" title="4.8  测试"></a>4.8  测试</h3><p>浏览器输入设定好的sever_name,这里是localhost:8080/test,显示如图，该文件夹下有名为t的文件，文件大小和时间在文件名后面显示。</p>
+<p><img src="file:///C:/Users/dell/AppData/Local/Temp/msohtmlclip1/01/clip_image006.jpg" alt="img"></p>
+<p>如果从来源非法的域名请求该文件，会跳转到下图</p>
+<p><img src="file:///C:/Users/dell/AppData/Local/Temp/msohtmlclip1/01/clip_image008.jpg" alt="img"></p>
+<p>如果从白名单中的域名请求该文件，则弹出下载界面</p>
+<p><img src="file:///C:/Users/dell/AppData/Local/Temp/msohtmlclip1/01/clip_image010.jpg" alt="img"></p>
+<h3 id="4-9-停止Nginx"><a href="#4-9-停止Nginx" class="headerlink" title="4.9  停止Nginx"></a>4.9  停止Nginx</h3><p>命令：</p>
+<p>cd /opt/nginx-1.12.2/sbin &amp;&amp; ./nginx -s quit</p>
+<p>此方式停止步骤是待nginx进程处理任务完毕进行停止</p>
+<p>注意：不推荐使用kill命令暴力杀掉nginx进程</p>
+<h2 id="5-参考文献"><a href="#5-参考文献" class="headerlink" title="5       参考文献"></a>5       参考文献</h2><p>官方主站：<a href="http://nginx.org/" target="_blank" rel="noopener">http://nginx.org/</a> </p>
+<p>Nginx的Wiki词条：<a href="https://zh.wikipedia.org/wiki/Nginx" target="_blank" rel="noopener">https://zh.wikipedia.org/wiki/Nginx</a> </p>
+<p>Linux版下载地址：<a href="http://nginx.org/download/nginx-1.12.2.tar.gz" target="_blank" rel="noopener">http://nginx.org/download/nginx-1.12.2.tar.gz</a></p>
+<p>Windos版下载地址：<a href="http://nginx.org/download/nginx-1.12.2.zip" target="_blank" rel="noopener">http://nginx.org/download/nginx-1.12.2.zip</a> </p>
+<p>nginx官方文档（英文）nginx documentation：<a href="https://nginx.org/en/docs/" target="_blank" rel="noopener">https://nginx.org/en/docs/</a> </p>
+<p>官方FAQ <a href="https://nginx.org/en/docs/faq.html" target="_blank" rel="noopener">https://nginx.org/en/docs/faq.html</a> </p>
+<p>nginx基本配置与参数说明：<a href="http://www.nginx.cn/76.html" target="_blank" rel="noopener">http://www.nginx.cn/76.html</a> </p>
+<p>nginx作为下载文件服务器：<a href="http://blog.csdn.net/zhang_ruiqiang/article/details/48141783" target="_blank" rel="noopener">http://blog.csdn.net/zhang_ruiqiang/article/details/48141783</a> </p>
+<p>nginx系统真正有效的图片防盗链完整设置详解：</p>
+<p><a href="http://blog.csdn.net/longjef/article/details/53284108" target="_blank" rel="noopener">http://blog.csdn.net/longjef/article/details/53284108</a></p>
+<p>使用referer指令配置Nginx服务器来防止图片盗链：</p>
+<p><a href="http://www.jb51.net/article/77218.htm" target="_blank" rel="noopener">http://www.jb51.net/article/77218.htm</a></p>
+<p>Nginx防盗链详细解说：<a href="http://blog.csdn.net/yuwenruli/article/details/8541952" target="_blank" rel="noopener">http://blog.csdn.net/yuwenruli/article/details/8541952</a> </p>
+<p>详解Nginx虚拟主机配置中server_name的具体写法：</p>
+<p><a href="http://www.jb51.net/article/81177.htm" target="_blank" rel="noopener">http://www.jb51.net/article/81177.htm</a> </p>
+<h2 id="附录1：防盗链文件服务器配置文件"><a href="#附录1：防盗链文件服务器配置文件" class="headerlink" title="附录1：防盗链文件服务器配置文件"></a>附录1：防盗链文件服务器配置文件</h2><p>#user  nobody;</p>
+<p>worker_processes 1;</p>
+<p>#error_log logs/error.log;</p>
+<p>#error_log logs/error.log  notice;</p>
+<p>#error_log logs/error.log  info;</p>
+<p>#pid       logs/nginx.pid;</p>
+<p>events {</p>
+<p>   worker_connections  1024;</p>
+<p>}</p>
+<p>http {</p>
+<p>​    include       mime.types;</p>
+<p>   default_type application/octet-stream;</p>
+<p>​    # 设定日志格式</p>
+<p>log_format  main  ‘$remote_addr - $remote_user [$time_local]”$request” ‘</p>
+<p>​    #                  ‘$status $body_bytes_sent”$http_referer” ‘</p>
+<p>​    #                  ‘“$http_user_agent””$http_x_forwarded_for”‘;</p>
+<p>access_log  logs/access.log  main;</p>
+<p>sendfile        on;</p>
+<p>tcp_nopush     on;</p>
+<p>keepalive_timeout  0;</p>
+<p>   keepalive_timeout  65; # 连接超时时间</p>
+<p>#gzip  on; # 开启gzip压缩</p>
+<p>​    server {</p>
+<p>​       listen       8080; #侦听8080端口</p>
+<p>​       server_name  localhost; #定义使用localhost访问</p>
+<p>​        #charsetkoi8-r;</p>
+<p>​       #access_log logs/host.access.log  main; #设定本虚拟主机的访问日志</p>
+<p>​        location/ { </p>
+<p>​           #root   html;</p>
+<p>​           #index  index.html index.htm;</p>
+<p>​            autoindexon; # 索引 </p>
+<p>​            autoindex_exact_sizeon; # 显示文件大小 </p>
+<p>​            autoindex_localtimeon; # 显示文件时间  </p>
+<p>​            valid_referersnone blocke *.echitch.com; #允许文件链出的域名白名单，自行修改成您的域名</p>
+<p>​            if($invalid_referer) {</p>
+<p>​                   rewrite ^/ <a href="https://timgsa.baidu.com/timg?image&amp;quality=80&amp;size=b9999_10000&amp;sec=1516096531700&amp;di=f2831f777910073bfcec1cb32b55fada&amp;imgtype=0&amp;src=http%3A%2F%2Fupload.news.cecb2b.com%2F2013%2F0913%2F1379061520118.jpg;#" target="_blank" rel="noopener">https://timgsa.baidu.com/timg?image&amp;quality=80&amp;size=b9999_10000&amp;sec=1516096531700&amp;di=f2831f777910073bfcec1cb32b55fada&amp;imgtype=0&amp;src=http%3A%2F%2Fupload.news.cecb2b.com%2F2013%2F0913%2F1379061520118.jpg;#</a> 提示盗链的图片，请自行修改成您想显示的图片域名</p>
+<p>​                   return 403;</p>
+<p>​            }</p>
+<p>​            if($request_filename ~<em>^.</em>?.(wma|wmv|asf|mp3|mmf|zip|rar|gz|jpg|gif|png|swf|flv|txt|doc|pdf|docx|exe|xlsx|ppt|pptx)$){</p>
+<p>​           add_header Content-Disposition: ‘attachment;’;</p>
+<p>​            }</p>
+<p>​        }</p>
+<p>​       #error_page  404              /404.html;</p>
+<p>​        #redirect server error pages to the static page /50x.html</p>
+<p>​        #</p>
+<p>​       error_page   500 502 503 504  /50x.html;</p>
+<p>​        location= /50x.html {</p>
+<p>​           root   html;</p>
+<p>​        }</p>
+<p>​    }</p>
+<p>}</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2018/04/12/快速搭建基于Nginx的防盗链文件服务器/" data-id="cjfwrdhbv0001wop4wgqoy0o9" class="article-share-link">Teilen</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2018/04/12/Nginx服务器安装部署文档及自动化安装部署脚本/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Älter</strong>
+      <div class="article-nav-title">Nginx服务器安装部署文档及自动化安装部署脚本</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archiv</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">letzter Beitrag</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2018/04/12/快速搭建基于Nginx的防盗链文件服务器/">快速搭建基于Nginx的防盗链文件服务器</a>
+          </li>
+        
+          <li>
+            <a href="/2018/04/12/Nginx服务器安装部署文档及自动化安装部署脚本/">Nginx服务器安装部署文档及自动化安装部署脚本</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2018 John Doe<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>
